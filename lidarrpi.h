@@ -16,7 +16,9 @@
 #include <thread>
 #include <mutex>
 
+#include "sdk/sdk/include/rplidar.h"
 
+using namespace rp::standalone::rplidar;
 
 /**
  * One of the 360 distance datapoints
@@ -143,14 +145,8 @@ private:
 	static const int nPackets = 90;
 	DataInterface* dataInterface = nullptr;
 	float rpm(unsigned char *packet);
-	bool verify_packet_checksum(unsigned char *packet);
-	unsigned count_errors(unsigned char *buf);
-	bool invalid_data_flag(unsigned char *data);
-	bool strength_warning_flag(unsigned char *data);
-	unsigned dist_mm(unsigned char *data);
-	unsigned signal_strength(unsigned char *data);
-	void raw2data(unsigned char *buf);
 	void updateMotorPWM(int newMotorDrive);
+	void getData();
 	static void run(Xv11* xv11);
 	int tty_fd = 0;
 	bool running = true;
@@ -158,10 +154,12 @@ private:
 	XV11Data xv11data[2][nDistance];
 	std::thread* worker = nullptr;
 	float currentRPM = 0;
-	unsigned currentBufIdx = 0;
 	std::mutex readoutMtx;
 	int pwmRange = -1;
 	bool doInit = true;
+	bool dataAvailable = false;
+	int currentBufIdx = 0;
+	RPlidarDriver *drv;
 };
 
 #endif

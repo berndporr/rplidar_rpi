@@ -12,32 +12,32 @@ set(CMAKE_CXX_STANDARD 11)
 
 find_package (Threads)
 
-include_directories( sdk/sdk/include sdk/sdk/src/ )
+include_directories(sdk/sdk/include sdk/sdk/src/)
 
-set(LIBSRC rplidar_driver.cpp)
-set(LIBINCLUDE rplidar_driver.h)
+set(LIBSRC lidarrpi.cpp)
+set(LIBINCLUDE lidarrpi.h)
 
-add_library(rplidar
+add_library(lidarrpi
   STATIC
   ${LIBSRC}
   )
 
-set_target_properties(rplidar PROPERTIES
+set_target_properties(lidarrpi PROPERTIES
   POSITION_INDEPENDENT_CODE TRUE
   PUBLIC_HEADER "${LIBINCLUDE}")
 
-target_link_libraries(rplidar ${CMAKE_THREAD_LIBS_INIT} pigpio rt)
+target_link_libraries(lidarrpi ${CMAKE_THREAD_LIBS_INIT} pigpio rt)
 
-install(TARGETS rplidar EXPORT rplidar_targets
+install(TARGETS lidarrpi EXPORT lidarrpi_targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable (printdata printdata.cpp)
-target_link_libraries(printdata rplidar)
+target_link_libraries(printdata lidarrpi)
 
 add_executable (printRPM printRPM.cpp)
-target_link_libraries(printRPM rplidar)
+target_link_libraries(printRPM lidarrpi)
 
 add_executable (pwm pwm.cpp)
 target_link_libraries(pwm pigpio rt ${CMAKE_THREAD_LIBS_INIT})
