@@ -105,7 +105,8 @@ void Xv11::getData() {
 				xv11data[currentBufIdx][pos].r = dist;
 				xv11data[currentBufIdx][pos].x = cos(angle) * dist;
 				xv11data[currentBufIdx][pos].y = sin(angle) * dist;
-				xv11data[currentBufIdx][pos].signal_strength = nodes[pos].sync_quality;
+				xv11data[currentBufIdx][pos].signal_strength =
+					nodes[pos].sync_quality >> RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT;
 				xv11data[currentBufIdx][pos].too_close = 0;
 				xv11data[currentBufIdx][pos].valid = true;
 				dataAvailable = true;
