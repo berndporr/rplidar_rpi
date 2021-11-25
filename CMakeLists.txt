@@ -14,7 +14,14 @@ find_package (Threads)
 
 include_directories(sdk/sdk/include sdk/sdk/src/)
 
-set(LIBSRC lidarrpi.cpp)
+set(LIBSRC
+  lidarrpi.cpp
+  sdk/sdk/src/rplidar_driver.cpp
+  sdk/sdk/src/arch/linux/net_socket.cpp
+  sdk/sdk/src/arch/linux/timer.cpp
+  sdk/sdk/src/arch/linux/net_serial.cpp
+  sdk/sdk/src/hal/thread.cpp
+  )
 set(LIBINCLUDE lidarrpi.h)
 
 add_library(lidarrpi
