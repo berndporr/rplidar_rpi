@@ -1,4 +1,4 @@
-#include "xv11.h"
+#include "lidarrpi.h"
 
 class DataInterface : public Xv11::DataInterface {
 public:

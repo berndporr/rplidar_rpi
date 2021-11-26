@@ -1,4 +1,4 @@
-#include "xv11.h"
+#include "lidarrpi.h"
 
 int main(int, char **) {
 	Xv11 xv11;
