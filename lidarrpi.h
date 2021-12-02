@@ -73,7 +73,7 @@ public:
 	 * Number of distance readings during one 360 degree
 	 * rotation. So we get one reading per degree.
 	 **/
-	static const unsigned nDistance = 360;
+	static const unsigned nDistance = 8192;
 
 	/**
 	 * Starts the data acquisition by spinning up the

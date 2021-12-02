@@ -94,7 +94,7 @@ void Xv11::updateMotorPWM(int _motorDrive) {
 }
 
 void Xv11::getData() {
-	size_t count = 8192;
+	size_t count = (size_t)nDistance;
 	rplidar_response_measurement_node_t nodes[count];
 	u_result op_result = drv->grabScanData(nodes, count);
 	if (IS_OK(op_result)) {
