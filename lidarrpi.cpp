@@ -39,7 +39,7 @@ void Xv11::start(const char *serial_port,
 	}
 	maxPWM = pwmRange / 2;
 
-	updateMotorPWM(maxPWM / 2);
+	updateMotorPWM(maxPWM / (7.0/5.0));
 
 	// create the driver instance
 	drv = RPlidarDriver::CreateDriver(DRIVER_TYPE_SERIALPORT);
@@ -114,10 +114,10 @@ void Xv11::getData() {
 				xv11data[currentBufIdx][pos].valid = false;
 			}
 		}
-		updateMotorPWM(
-			motorDrive +
-			(int)round((desiredRPM - currentRPM) * loopRPMgain * (float)pwmRange)
-			);
+		//		updateMotorPWM(
+		//			motorDrive +
+		//			(int)round((desiredRPM - currentRPM) * loopRPMgain * (float)pwmRange)
+		//			);
 		if ( (dataAvailable) && (nullptr != dataInterface) ) {
 			dataInterface->newScanAvail(currentRPM, xv11data[currentBufIdx]);
 		}
