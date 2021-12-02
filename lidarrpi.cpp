@@ -42,7 +42,7 @@ void Xv11::start(const char *serial_port,
 	}
 	maxPWM = pwmRange / 2;
 
-	updateMotorPWM(maxPWM / (7.0/5.0));
+	updateMotorPWM(maxPWM / (7.0/4.0));
 
 	// create the driver instance
 	drv = RPlidarDriver::CreateDriver(DRIVER_TYPE_SERIALPORT);
@@ -96,6 +96,12 @@ void Xv11::getData() {
 	rplidar_response_measurement_node_hq_t nodes[count];
 	u_result op_result = drv->grabScanDataHq(nodes, count);
 	if (IS_OK(op_result)) {
+		unsigned long timeNow = getTimeMS();
+		if (previousTime > 0) {
+			float t = (timeNow - previousTime) / 1000.0f;
+			currentRPM = 1.0f/t * 60.0f;
+		}
+		previousTime = timeNow;
 		drv->ascendScanData(nodes, count);
 		for (int pos = 0; pos < (int)count ; ++pos) {
 			float angle = M_PI - nodes[pos].angle_z_q14 * (90.f / 16384.f / (180.0f / M_PI));
@@ -115,10 +121,10 @@ void Xv11::getData() {
 				xv11data[currentBufIdx][pos].valid = false;
 			}
 		}
-		//		updateMotorPWM(
-		//			motorDrive +
-		//			(int)round((desiredRPM - currentRPM) * loopRPMgain * (float)pwmRange)
-		//			);
+		updateMotorPWM(
+			       motorDrive +
+			       (int)round((desiredRPM - currentRPM) * loopRPMgain * (float)pwmRange)
+			       );
 		if ( (dataAvailable) && (nullptr != dataInterface) ) {
 			dataInterface->newScanAvail(currentRPM, xv11data[currentBufIdx]);
 		}

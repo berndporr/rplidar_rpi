@@ -21,7 +21,7 @@
 using namespace rp::standalone::rplidar;
 
 /**
- * One of the 360 distance datapoints
+ * One of the 8192 distance datapoints
  **/
 class XV11Data {
 public:
@@ -84,7 +84,7 @@ public:
 	 * is the one which talks to the XV11.
 	 **/
 	void start(const char *serial_port = "/dev/serial0",
-		   const unsigned rpm = 250);
+		   const unsigned rpm = 300);
 		   
 	/**
 	 * Stops the data acquisition
@@ -137,6 +137,14 @@ public:
 	int getPWMrange() { return pwmRange; }
 
 private:
+	static unsigned long getTimeMS() {
+		std::chrono::time_point<std::chrono::system_clock> now = 
+			std::chrono::system_clock::now();
+		auto duration = now.time_since_epoch();
+		return (unsigned long)std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+	}
+
+	unsigned long previousTime = 0;
 	static const int GPIO_PWM = 18;
 	int maxPWM = 1;
 	static const int pwm_frequency = 50;
