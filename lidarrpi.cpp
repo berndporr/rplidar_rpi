@@ -19,6 +19,9 @@ void Xv11::start(const char *serial_port,
 	if (nullptr != worker) return;
 
 	if (doInit) {
+		int cfg = gpioCfgGetInternals();
+		cfg |= PI_CFG_NOSIGHANDLER;
+		gpioCfgSetInternals(cfg);
 		if (gpioInitialise() < 0) {
 			throw "gpioInitialise failed";
 		}
