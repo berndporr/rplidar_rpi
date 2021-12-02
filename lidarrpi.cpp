@@ -79,7 +79,7 @@ void Xv11::start(const char *serial_port,
 	}
 
 	// start scan...
-	drv->startScan(0,1);
+	drv->startScan(0,true,0,&scanMode);
 
 	worker = new std::thread(Xv11::run,this);
 }

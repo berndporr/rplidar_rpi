@@ -136,6 +136,14 @@ public:
 	 **/
 	int getPWMrange() { return pwmRange; }
 
+	float getSamplingRate() {
+		float f = 0;
+		if (drv)
+			drv->getFrequency(scanMode, 1, f);
+		return f;
+	}
+
+
 private:
 	static const int GPIO_PWM = 18;
 	int maxPWM = 1;
@@ -160,6 +168,7 @@ private:
 	bool dataAvailable = false;
 	int currentBufIdx = 0;
 	RPlidarDriver *drv;
+	RplidarScanMode scanMode;
 };
 
 #endif
