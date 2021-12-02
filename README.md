@@ -2,35 +2,29 @@
 
 ![alt tag](robot.jpg)
 
-The project describes how to mount and interface the XV11 laser range
-finder onto the
-[Alphabot](https://www.open-electronics.org/alphabot-the-open-source-robot/)
- -- Raspberry PI version.
-
-The actual name of the sensor is Piccolo Laser Distance Sensor,
-abbreviated into LDS, but many different names are used to refer to
-it: Neato LDS, Neato lidar, XV-11 lidar, XV-11 sensor...
+This project describes how to connect a Slamtech RPLIDAR A1 directly
+to a Raspberry PI by using its in-built serial port. So no need to use
+the supplied USB interface.
 
 This repository contains a C++ class which reads the coordinates
-and also does the motor control via hardware PWM of the RPI.
+and also does the motor control via PWM of the RPI.
 
 ## Wiring
 
-There are two plugs which plug into the LIDAR. One is for the data and
-the other for the motor control. The data is transmitted via the
-Raspberry PI serial port and the speed is controlled with PWM at
-GPIO pin 18.
+There are two sockets on the LIDAR. One is for the serial communication and
+the other for the motor control. The serial data is transmitted via the
+Raspberry PI serial port and the speed is controlled with GPIO pin 18.
 
-Use the cable which comes with the LIDAR and plug the two plugs into
-the LIDAR and chop off the single connector at the other end.
+Use the cable which comes with the LIDAR and plug its two plugs into
+the two sockets on the LIDAR and chop off the single connector at the other end.
 
 Solder the wires to the serial port of the Raspberry PI
 and port 18:
 
 ![alt tag](wiring.png)
 
-The motor should be receiving the unregulated battery voltage (<10V) or
-a regulated 5V but the serial interface requires 5V regulated.
+The motor can be receiving the unregulated battery voltage (<10V) or
+the 5V from the raspberry PI but the serial interface requires 5V regulated.
 
 # Software
 
