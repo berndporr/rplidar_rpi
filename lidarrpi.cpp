@@ -70,16 +70,14 @@ void Xv11::start(const char *serial_port,
 	
 	rplidar_response_device_health_t healthinfo;
 	u_result op_result = drv->getHealth(healthinfo);
-	if (IS_OK(op_result)) { // the macro IS_OK is the preperred way to judge whether the operation is succeed.
-		printf("RPLidar health status : %d\n", healthinfo.status);
+	if (IS_OK(op_result)) {
 		if (healthinfo.status == RPLIDAR_STATUS_ERROR) {
 			throw "Error, rplidar internal error detected. Please reboot the device to retry.";
 		}
 	} else {
-		throw "Error, cannot retrieve the lidar health code.";
+		throw "Error, cannot retrieve the rplidar health code.";
 	}
 
-	drv->startMotor();
 	// start scan...
 	drv->startScan(0,1);
 
@@ -95,13 +93,13 @@ void Xv11::updateMotorPWM(int _motorDrive) {
 
 void Xv11::getData() {
 	size_t count = (size_t)nDistance;
-	rplidar_response_measurement_node_t nodes[count];
-	u_result op_result = drv->grabScanData(nodes, count);
+	rplidar_response_measurement_node_hq_t nodes[count];
+	u_result op_result = drv->grabScanDataHq(nodes, count);
 	if (IS_OK(op_result)) {
 		drv->ascendScanData(nodes, count);
 		for (int pos = 0; pos < (int)count ; ++pos) {
-			float angle = (float)pos / (float)count * (float)M_PI * 2.0f - (float)M_PI;
-			float dist = nodes[pos].distance_q2/4.0f;
+			float angle = M_PI - nodes[pos].angle_z_q14 * (90.f / 16384.f / (180.0f / M_PI));
+			float dist = nodes[pos].dist_mm_q2/4000.0f;
 			if (dist > 0) {
 				//fprintf(stderr,"%d,phi=%f,r=%f\n",j,angle,dist);
 				xv11data[currentBufIdx][pos].phi = angle;
@@ -109,7 +107,7 @@ void Xv11::getData() {
 				xv11data[currentBufIdx][pos].x = cos(angle) * dist;
 				xv11data[currentBufIdx][pos].y = sin(angle) * dist;
 				xv11data[currentBufIdx][pos].signal_strength =
-					nodes[pos].sync_quality >> RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT;
+					nodes[pos].quality >> RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT;
 				xv11data[currentBufIdx][pos].too_close = 0;
 				xv11data[currentBufIdx][pos].valid = true;
 				dataAvailable = true;
