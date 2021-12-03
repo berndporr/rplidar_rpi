@@ -50,19 +50,11 @@ void Xv11::start(const char *serial_port,
 		throw "insufficent memory";
 	}
     
-	rplidar_response_device_info_t devinfo;
-	bool connectSuccess = false;
 	// make connection...
-        if (IS_OK(drv->connect(serial_port, 115200)))
-        {
+        if (IS_OK(drv->connect(serial_port, 115200))) {
+		rplidar_response_device_info_t devinfo;
 		u_result op_result = drv->getDeviceInfo(devinfo);
-		
-		if (IS_OK(op_result)) 
-		{
-			connectSuccess = true;
-            }
-		else
-		{
+		if (!IS_OK(op_result)) {
 			delete drv;
 			drv = NULL;
 		}
@@ -88,7 +80,6 @@ void Xv11::updateMotorPWM(int _motorDrive) {
 	motorDrive = _motorDrive;
 	if (motorDrive > maxPWM) motorDrive = maxPWM;
 	gpioPWM(GPIO_PWM,motorDrive);
-	//fprintf(stderr,"motorDrive = %d\n",motorDrive);
 }
 
 void Xv11::getData() {

@@ -136,14 +136,6 @@ public:
 	 **/
 	int getPWMrange() { return pwmRange; }
 
-	float getSamplingRate() {
-		float f = 0;
-		if (drv)
-			drv->getFrequency(scanMode, 1, f);
-		return f;
-	}
-
-
 private:
 	static unsigned long getTimeMS() {
 		std::chrono::time_point<std::chrono::system_clock> now = 
