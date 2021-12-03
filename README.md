@@ -38,6 +38,16 @@ Install the pigpio package and development headers:
 apt-get install libpigpio-dev
 ```
 
+## Installation
+
+`cmake .`
+
+`make`
+
+`sudo make install`
+
+This installs the library and can then be used in your application.
+
 ## Xv11 C++ class
 
 The class has `start()` and `stop()` functions which start and
