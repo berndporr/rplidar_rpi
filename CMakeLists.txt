@@ -12,15 +12,15 @@ set(CMAKE_CXX_STANDARD 11)
 
 find_package (Threads)
 
-include_directories(sdk/sdk/include sdk/sdk/src/)
+include_directories(sdk/include sdk/src/)
 
 set(LIBSRC
   lidarrpi.cpp
-  sdk/sdk/src/rplidar_driver.cpp
-  sdk/sdk/src/arch/linux/net_socket.cpp
-  sdk/sdk/src/arch/linux/timer.cpp
-  sdk/sdk/src/arch/linux/net_serial.cpp
-  sdk/sdk/src/hal/thread.cpp
+  sdk/src/rplidar_driver.cpp
+  sdk/src/arch/linux/net_socket.cpp
+  sdk/src/arch/linux/timer.cpp
+  sdk/src/arch/linux/net_serial.cpp
+  sdk/src/hal/thread.cpp
   )
 set(LIBINCLUDE lidarrpi.h)
 
