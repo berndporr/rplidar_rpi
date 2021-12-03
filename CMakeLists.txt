@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 find_package (Threads)
 
-include_directories(rplidarsdk/include rplidarsdk/src/)
+include_directories(rplidarsdk/include rplidarsdk/src)
 
 set(LIBSRC
   lidarrpi.cpp
@@ -70,6 +70,11 @@ install(TARGETS lidarrpi EXPORT lidarrpi_targets
   INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rplidarsdk
   )
+
+install(EXPORT lidarrpi_targets
+  DESTINATION lib/cmake/lidarrpi
+  FILE lidarrpi-config.cmake
+)
 
 add_executable (printdata printdata.cpp)
 target_link_libraries(printdata lidarrpi)
