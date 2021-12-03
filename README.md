@@ -1,4 +1,4 @@
-# Slamtec RPLIDAR on an Alphabot with a Raspberry PI
+# Slamtec RPLIDAR A1 on an Alphabot with a Raspberry PI
 
 ![alt tag](robot.jpg)
 
@@ -8,6 +8,9 @@ the supplied USB interface.
 
 This repository contains a C++ class which reads the coordinates
 and also does the motor control via PWM of the RPI.
+
+A 360 degree scan is provided by a callback at the sampling rate
+of the LIDAR which is kept at 300RPM (5Hz).
 
 ## Wiring
 
@@ -24,7 +27,7 @@ and port 18:
 ![alt tag](wiring.png)
 
 The motor can be receiving the unregulated battery voltage (<10V) or
-the 5V from the raspberry PI but the serial interface requires 5V regulated.
+the 5V from the raspberry PI but the serial interface requires 5V.
 
 # Software
 
@@ -57,3 +60,9 @@ sudo ./printdata > tt2.tsv
 gnuplot> plot "tt2.tsv"
 ```
 ![alt tag](map.png)
+
+## Credits
+
+The `sdk` folder is from the official Slamtec git (latest v1.x):
+
+https://github.com/Slamtec/rplidar_sdk
