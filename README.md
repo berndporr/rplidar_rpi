@@ -73,6 +73,7 @@ gnuplot> plot "tt2.tsv"
 
 ## Credits
 
-The `sdk` folder is from the official Slamtec git (latest v1.x):
+The `rplidarsdk` folder is the `sdk` folder
+from the official Slamtec git (latest v1.x):
 
 https://github.com/Slamtec/rplidar_sdk

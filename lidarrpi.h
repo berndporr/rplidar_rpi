@@ -1,7 +1,5 @@
 /**
  * Copyright (C) 2021 by Bernd Porr
- * Copyright (C) 2020 by Dmitry V. Sokolov
- * Apache License 2.0
  **/
 
 #ifndef XV11_H
@@ -16,7 +14,7 @@
 #include <thread>
 #include <mutex>
 
-#include "rplidar.h"
+#include "rplidarsdk/rplidar.h"
 
 using namespace rp::standalone::rplidar;
 
