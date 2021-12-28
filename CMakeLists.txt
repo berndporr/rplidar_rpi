@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 find_package (Threads)
 
-include_directories(rplidarsdk/include rplidarsdk/src)
+include_directories(include rplidarsdk/src)
 
 set(LIBSRC
   a1lidarrpi.cpp
@@ -58,8 +58,7 @@ target_include_directories(a1lidarrpi
 
 set_target_properties(a1lidarrpi PROPERTIES
   POSITION_INDEPENDENT_CODE TRUE
-  PUBLIC_HEADER a1lidarrpi.h
-  PRIVATE_HEADER "${SDKINCLUDE}")
+  PUBLIC_HEADER a1lidarrpi.h)
 
 target_link_libraries(a1lidarrpi ${CMAKE_THREAD_LIBS_INIT} pigpio rt)
 
@@ -68,13 +67,18 @@ install(TARGETS a1lidarrpi EXPORT a1lidarrpi_targets
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-  PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rplidarsdk
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   )
 
+install(DIRECTORY include/ DESTINATION include)
+install(DIRECTORY rplidarsdk/src/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY rplidarsdk/src/hal/ DESTINATION include/hal FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY rplidarsdk/src/arch/ DESTINATION include/arch FILES_MATCHING PATTERN "*.h")
+
+
 install(EXPORT a1lidarrpi_targets
-  DESTINATION lib/cmake/a1lidarrpi
-  FILE a1lidarrpi-config.cmake
+  DESTINATION lib/cmake/A1LidarRPI
+  FILE A1LidarRPIConfig.cmake
 )
 
 add_executable (printdata printdata.cpp)
