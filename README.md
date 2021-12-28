@@ -48,21 +48,21 @@ apt-get install libpigpio-dev
 
 This installs the library and can then be used in your application.
 
-## Xv11 C++ class
+## A1Lidar class
 
 The class has `start()` and `stop()` functions which start and
 stop the data acquisition and also start and stop the motor of
 the range finder.
 
 The data is transmitted via `DataInterface` where the abstract function
-`newScanAvail(XV11Data (&data)[Xv11::nDistance])` needs to be implemented
+`newScanAvail(float rpm, A1LidarData (&)[A1Lidar::nDistance]) = 0` needs to be implemented
 which then receives both the polar and Cartesian coordinates after
 a successful 360 degree scan. Register your `DataInterface` with
 `registerInterface`.
 
 ## Example program
-`printdata` prints tab separated data as
-`x <tab> y <tab> r <tab> phi <tab> strength <tab> too_close` until a key is pressed.
+`printdata` prints tab separated distance data as
+`x <tab> y <tab> r <tab> phi <tab> strength` until a key is pressed.
 
 Pipe the data into a textfile and plot it with `gnuplot`:
 ```
@@ -70,6 +70,8 @@ sudo ./printdata > tt2.tsv
 gnuplot> plot "tt2.tsv"
 ```
 ![alt tag](map.png)
+
+`printRPM` prints the current RPM until you press ctrl-C.
 
 ## Credits
 
