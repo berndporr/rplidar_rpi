@@ -14,7 +14,7 @@
 #include <thread>
 #include <mutex>
 
-#include "rplidarsdk/rplidar.h"
+#include "rplidar.h"
 
 using namespace rp::standalone::rplidar;
 
