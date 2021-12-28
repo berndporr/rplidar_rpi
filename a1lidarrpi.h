@@ -2,8 +2,8 @@
  * Copyright (C) 2021 by Bernd Porr
  **/
 
-#ifndef XV11_H
-#define XV11_H
+#ifndef A1LIDARRPI_H
+#define A1LIDARRPI_H
 
 #include <iostream>
 #include <cstring>
@@ -21,7 +21,7 @@ using namespace rp::standalone::rplidar;
 /**
  * One of the 8192 distance datapoints
  **/
-class XV11Data {
+class A1LidarData {
 public:
 	/**
 	 * Distance in m
@@ -51,11 +51,6 @@ public:
 	float signal_strength = 0;
 
 	/**
-	 * Flag if the object is too close.
-	 **/
-	bool too_close = false;
-
-	/**
 	 * Flag if the reading is valid
 	 **/
 	bool valid = false;
@@ -65,7 +60,7 @@ public:
 /**
  * Class to continously acquire data from the LIDAR
  **/
-class Xv11 {
+class A1Lidar {
 public:
 	/**
 	 * Number of distance readings during one 360 degree
@@ -89,14 +84,14 @@ public:
 	 **/
 	void stop();
 
-	Xv11(bool _doInit = true) {
+	A1Lidar(bool _doInit = true) {
 		doInit = _doInit;
 	}
 
 	/**
 	 * Destructor which stops the motor and the data acquisition thread.
 	 **/
-	~Xv11() {
+	~A1Lidar() {
 		stop();
 		gpioTerminate();
 	}
@@ -105,7 +100,7 @@ public:
 	 * Callback interface which needs to be implemented by the user.
 	 **/
 	struct DataInterface {
-		virtual void newScanAvail(float rpm, XV11Data (&)[Xv11::nDistance]) = 0;
+		virtual void newScanAvail(float rpm, A1LidarData (&)[A1Lidar::nDistance]) = 0;
 	};
 
 	/**
@@ -118,9 +113,9 @@ public:
 	/**
 	 * Returns the current databuffer which is not being written to.
 	 **/
-	inline XV11Data (&getCurrentData())[nDistance]  {
+	inline A1LidarData (&getCurrentData())[nDistance]  {
 		readoutMtx.lock();
-		return xv11data[!currentBufIdx];
+		return a1LidarData[!currentBufIdx];
 		readoutMtx.unlock();
 	}
 
@@ -153,11 +148,11 @@ private:
 	float rpm(unsigned char *packet);
 	void updateMotorPWM(int newMotorDrive);
 	void getData();
-	static void run(Xv11* xv11);
+	static void run(A1Lidar* a1Lidar);
 	int tty_fd = 0;
 	bool running = true;
         int motorDrive = 50;
-	XV11Data xv11data[2][nDistance];
+	A1LidarData a1LidarData[2][nDistance];
 	std::thread* worker = nullptr;
 	float currentRPM = 0;
 	std::mutex readoutMtx;

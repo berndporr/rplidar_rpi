@@ -1,17 +1,16 @@
-#include "lidarrpi.h"
+#include "a1lidarrpi.h"
 
-class DataInterface : public Xv11::DataInterface {
+class DataInterface : public A1Lidar::DataInterface {
 public:
-	void newScanAvail(float,XV11Data (&data)[Xv11::nDistance]) {
-		for(XV11Data &data: data) {
+	void newScanAvail(float,A1LidarData (&data)[A1Lidar::nDistance]) {
+		for(A1LidarData &data: data) {
 			if (data.valid)
-				printf("%f\t%f\t%f\t%f\t%f\t%d\n",
+				printf("%e\t%e\t%e\t%e\t%e\n",
 				       data.x,
 				       data.y,
 				       data.r,
 				       data.phi,
-				       data.signal_strength,
-				       (int)data.too_close);
+				       data.signal_strength);
 		}
 		fprintf(stderr,".");
 	}
@@ -20,12 +19,12 @@ public:
 int main(int, char **) {
 	fprintf(stderr,"Data format:"
 		" x tab y tab r tab phi tab strengh tab too_close\n");
-	Xv11 xv11;
+	A1Lidar lidar;
 	DataInterface dataInterface;
-	xv11.registerInterface(&dataInterface);
-	xv11.start();
+	lidar.registerInterface(&dataInterface);
+	lidar.start();
 	do {
 	} while (!getchar());
 	fprintf(stderr,"\n");
-	xv11.stop();
+	lidar.stop();
 }

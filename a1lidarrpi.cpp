@@ -1,8 +1,8 @@
-#include "lidarrpi.h"
+#include "a1lidarrpi.h"
 #include <math.h>
 
 
-void Xv11::stop() {
+void A1Lidar::stop() {
 	running = false;
 	if (nullptr != worker) {
 		worker->join();
@@ -14,7 +14,7 @@ void Xv11::stop() {
 	}
 }
 
-void Xv11::start(const char *serial_port, 
+void A1Lidar::start(const char *serial_port, 
 		 const unsigned rpm) {
 	if (nullptr != worker) return;
 
@@ -73,16 +73,16 @@ void Xv11::start(const char *serial_port,
 	// start scan...
 	drv->startScan(0,true,0,&scanMode);
 
-	worker = new std::thread(Xv11::run,this);
+	worker = new std::thread(A1Lidar::run,this);
 }
 
-void Xv11::updateMotorPWM(int _motorDrive) {
+void A1Lidar::updateMotorPWM(int _motorDrive) {
 	motorDrive = _motorDrive;
 	if (motorDrive > maxPWM) motorDrive = maxPWM;
 	gpioPWM(GPIO_PWM,motorDrive);
 }
 
-void Xv11::getData() {
+void A1Lidar::getData() {
 	size_t count = (size_t)nDistance;
 	rplidar_response_measurement_node_hq_t nodes[count];
 	u_result op_result = drv->grabScanDataHq(nodes, count);
@@ -99,17 +99,16 @@ void Xv11::getData() {
 			float dist = nodes[pos].dist_mm_q2/4000.0f;
 			if (dist > 0) {
 				//fprintf(stderr,"%d,phi=%f,r=%f\n",j,angle,dist);
-				xv11data[currentBufIdx][pos].phi = angle;
-				xv11data[currentBufIdx][pos].r = dist;
-				xv11data[currentBufIdx][pos].x = cos(angle) * dist;
-				xv11data[currentBufIdx][pos].y = sin(angle) * dist;
-				xv11data[currentBufIdx][pos].signal_strength =
+				a1LidarData[currentBufIdx][pos].phi = angle;
+				a1LidarData[currentBufIdx][pos].r = dist;
+				a1LidarData[currentBufIdx][pos].x = cos(angle) * dist;
+				a1LidarData[currentBufIdx][pos].y = sin(angle) * dist;
+				a1LidarData[currentBufIdx][pos].signal_strength =
 					nodes[pos].quality >> RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT;
-				xv11data[currentBufIdx][pos].too_close = 0;
-				xv11data[currentBufIdx][pos].valid = true;
+				a1LidarData[currentBufIdx][pos].valid = true;
 				dataAvailable = true;
 			} else {
-				xv11data[currentBufIdx][pos].valid = false;
+				a1LidarData[currentBufIdx][pos].valid = false;
 			}
 		}
 		updateMotorPWM(
@@ -117,7 +116,7 @@ void Xv11::getData() {
 			       (int)round((desiredRPM - currentRPM) * loopRPMgain * (float)pwmRange)
 			       );
 		if ( (dataAvailable) && (nullptr != dataInterface) ) {
-			dataInterface->newScanAvail(currentRPM, xv11data[currentBufIdx]);
+			dataInterface->newScanAvail(currentRPM, a1LidarData[currentBufIdx]);
 		}
 		readoutMtx.lock();
 		currentBufIdx = !currentBufIdx;
@@ -125,11 +124,11 @@ void Xv11::getData() {
 	}
 }
 
-void Xv11::run(Xv11* xv11) {
-	while (xv11->running) {
-		xv11->getData();
+void A1Lidar::run(A1Lidar* a1Lidar) {
+	while (a1Lidar->running) {
+		a1Lidar->getData();
 	}
-	xv11->updateMotorPWM(0);
+	a1Lidar->updateMotorPWM(0);
 	gpioPWM(GPIO_PWM,0);
 	gpioSetMode(GPIO_PWM,PI_INPUT);
 }

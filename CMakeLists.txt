@@ -13,7 +13,7 @@ find_package (Threads)
 include_directories(rplidarsdk/include rplidarsdk/src)
 
 set(LIBSRC
-  lidarrpi.cpp
+  a1lidarrpi.cpp
   rplidarsdk/src/rplidar_driver.cpp
   rplidarsdk/src/arch/linux/net_socket.cpp
   rplidarsdk/src/arch/linux/timer.cpp
@@ -44,26 +44,26 @@ set(SDKINCLUDE
   rplidarsdk/include/rplidar_protocol.h
   )
 
-add_library(lidarrpi
+add_library(a1lidarrpi
   STATIC
   ${LIBSRC}
   )
 
-target_include_directories(lidarrpi
+target_include_directories(a1lidarrpi
   PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>      # for lidarrpi.h
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>      # for a1lidarrpi.h
   PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/rplidarsdk>  # everything else
 )
 
-set_target_properties(lidarrpi PROPERTIES
+set_target_properties(a1lidarrpi PROPERTIES
   POSITION_INDEPENDENT_CODE TRUE
-  PUBLIC_HEADER lidarrpi.h
+  PUBLIC_HEADER a1lidarrpi.h
   PRIVATE_HEADER "${SDKINCLUDE}")
 
-target_link_libraries(lidarrpi ${CMAKE_THREAD_LIBS_INIT} pigpio rt)
+target_link_libraries(a1lidarrpi ${CMAKE_THREAD_LIBS_INIT} pigpio rt)
 
-install(TARGETS lidarrpi EXPORT lidarrpi_targets
+install(TARGETS a1lidarrpi EXPORT a1lidarrpi_targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
@@ -71,16 +71,16 @@ install(TARGETS lidarrpi EXPORT lidarrpi_targets
   PRIVATE_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/rplidarsdk
   )
 
-install(EXPORT lidarrpi_targets
-  DESTINATION lib/cmake/lidarrpi
-  FILE lidarrpi-config.cmake
+install(EXPORT a1lidarrpi_targets
+  DESTINATION lib/cmake/a1lidarrpi
+  FILE a1lidarrpi-config.cmake
 )
 
 add_executable (printdata printdata.cpp)
-target_link_libraries(printdata lidarrpi)
+target_link_libraries(printdata a1lidarrpi)
 
 add_executable (printRPM printRPM.cpp)
-target_link_libraries(printRPM lidarrpi)
+target_link_libraries(printRPM a1lidarrpi)
 
 add_executable (pwm pwm.cpp)
 target_link_libraries(pwm pigpio rt ${CMAKE_THREAD_LIBS_INIT})

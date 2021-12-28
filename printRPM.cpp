@@ -1,7 +1,7 @@
-#include "lidarrpi.h"
+#include "a1lidarrpi.h"
 #include "signal.h"
 
-Xv11 xv11;
+A1Lidar lidar;
 
 bool running = true;
 
@@ -17,14 +17,14 @@ void sig_handler(int signo)
 int main(int, char **) {
 	signal(SIGINT, sig_handler);
 	fprintf(stderr,"Press ctrl-C to stop it.\n");
-	xv11.start();
-	fprintf(stderr,"PWM range = %d\n",xv11.getPWMrange());
+	lidar.start();
+	fprintf(stderr,"PWM range = %d\n",lidar.getPWMrange());
 	while (running) {
 		fprintf(stderr,">");
-		printf("%f\n",xv11.getRPM());
+		printf("%f\n",lidar.getRPM());
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 	fprintf(stderr,"Stopping the LIDAR.\n");
-	xv11.stop();
+	lidar.stop();
 	fprintf(stderr,"All shut down.\n");
 }
