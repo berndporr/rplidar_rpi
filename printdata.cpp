@@ -18,13 +18,14 @@ public:
 
 int main(int, char **) {
 	fprintf(stderr,"Data format:"
-		" x tab y tab r tab phi tab strengh tab too_close\n");
+		" x <tab> y <tab> r <tab> phi <tab> strengh\n");
+	fprintf(stderr,"Press any key to stop.\n");
 	A1Lidar lidar;
 	DataInterface dataInterface;
 	lidar.registerInterface(&dataInterface);
 	lidar.start();
 	do {
 	} while (!getchar());
-	fprintf(stderr,"\n");
 	lidar.stop();
+	fprintf(stderr,"\n");
 }

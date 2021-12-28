@@ -9,7 +9,6 @@ void sig_handler(int signo)
 {
 	if (signo == SIGINT) {
 		running = false;
-		fprintf(stderr,"\n");
 	}
 }
 
@@ -24,7 +23,7 @@ int main(int, char **) {
 		printf("%f\n",lidar.getRPM());
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
-	fprintf(stderr,"Stopping the LIDAR.\n");
+	fprintf(stderr,"\nStopping the LIDAR.\n");
 	lidar.stop();
 	fprintf(stderr,"All shut down.\n");
 }
