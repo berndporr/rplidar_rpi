@@ -29,16 +29,24 @@ and port 18:
 The motor can be receiving the unregulated battery voltage (<10V) or
 the 5V from the raspberry PI but the serial interface requires 5V.
 
-# Software
+## Rapberry PI config
 
-## Prerequisites
+ - Start `raspi-config`
+ - Select `Serial Port   Enable/disable shell messages on the serial connection`
+ - Answer No: `Would you like a login shell to be accessible over serial?`
+ - Answer Yes: `Would you like the serial port hardware to be enabled?`
+ - Reboot when prompted
+
+## Software
+
+### Prerequisites
 
 Install the pigpio package and development headers:
 ```
 apt-get install libpigpio-dev
 ```
 
-## Installation
+### Installation
 
 `cmake .`
 

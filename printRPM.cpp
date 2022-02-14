@@ -25,5 +25,5 @@ int main(int, char **) {
 	}
 	fprintf(stderr,"\nStopping the LIDAR.\n");
 	lidar.stop();
-	fprintf(stderr,"All shut down.\n");
+	fprintf(stderr,"Shut down.\n");
 }

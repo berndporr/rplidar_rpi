@@ -57,6 +57,8 @@ void A1Lidar::start(const char *serial_port,
 		if (!IS_OK(op_result)) {
 			delete drv;
 			drv = NULL;
+			updateMotorPWM(0);
+			throw "Devinfo is not OK";
 		}
         }
 	
