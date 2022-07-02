@@ -93,7 +93,6 @@ public:
 	 **/
 	~A1Lidar() {
 		stop();
-		gpioTerminate();
 	}
 
 	/**

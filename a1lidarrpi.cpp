@@ -23,7 +23,7 @@ void A1Lidar::start(const char *serial_port,
 		cfg |= PI_CFG_NOSIGHANDLER;
 		gpioCfgSetInternals(cfg);
 		if (gpioInitialise() < 0) {
-			throw "gpioInitialise failed";
+			throw "gpioInitialise() failed";
 		}
 	}
 
@@ -37,8 +37,8 @@ void A1Lidar::start(const char *serial_port,
 	pwmRange = gpioGetPWMrange(GPIO_PWM);
 	if ( (pwmRange == PI_BAD_USER_GPIO) || (pwmRange < 25) ) {
 		stop();
-		const char msg[] = "Fatal GPIO error: Could not get the PWM range.";
-		throw msg;
+		throw "Fatal GPIO error: Could not get the PWM range.";
+
 	}
 	maxPWM = pwmRange / 2;
 
